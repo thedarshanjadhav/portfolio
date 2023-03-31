@@ -46,7 +46,7 @@
       <h1 class="asdf"><a href="index.html">Darshan Jadhav</a></h1>
       <!-- Uncomment below if you prefer to use an image logo -->
       <!-- <a href="index.html" class="mr-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a> -->
-      <h2>I'm a passionate <span>Web Developer</span></h2>
+      <h2>I'm a <span id="auto-type"></span></h2>
 
       <nav id="navbar" class="navbar">
         <ul>
@@ -482,6 +482,15 @@
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+  <script src="https://unpkg.com/typed.js@2.0.14/dist/typed.umd.js"></script>
+  <script>
+    var typed = new Typed("#auto-type",{
+      strings : ["Web Developer","Designer","Freelancer"],
+      typeSpeed : 100,
+      backSpeed : 100,
+      loop : true
+    })
+  </script>
 
 </body>
 
