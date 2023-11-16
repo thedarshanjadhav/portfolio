@@ -1,6 +1,4 @@
-Thanks for downloading this template!
+Overview
+This is a simple portfolio website showcasing my skills, projects, and experiences. The website is built using Bootstrap for responsive design, JavaScript for interactivity, and HTML for structuring the content.
 
-Template Name: Personal
-Template URL: https://bootstrapmade.com/personal-free-resume-bootstrap-template/
-Author: BootstrapMade.com
-License: https://bootstrapmade.com/license/
+
