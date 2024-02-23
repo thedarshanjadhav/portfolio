@@ -505,7 +505,8 @@
         </div>
       </div>
 
-      <form action="forms/contact.php" method="post" role="form" class="php-email-form mt-4">
+      <form action="https://formspree.io/f/mqkrbkwn"
+      method="POST" role="form" class="php-email-form mt-4">
         <div class="row">
           <div class="col-md-6 form-group">
             <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
@@ -521,9 +522,9 @@
           <textarea class="form-control" name="message" rows="5" placeholder="Message" required></textarea>
         </div>
         <div class="my-3">
-          <div class="loading">Loading</div>
-          <div class="error-message"></div>
+          <!-- <div class="loading" style="display: none;">Loading</div> -->
           <div class="sent-message">Your message has been sent. Thank you!</div>
+          <!-- <div class="error-message" style="display: none;"></div> -->
         </div>
         <div class="text-center"><button type="submit">Send Message</button></div>
       </form>
@@ -552,6 +553,38 @@
       loop : true
     });
 
+    document.addEventListener("DOMContentLoaded", function () {
+      var form = document.querySelector('.php-email-form');
+      var sentMessage = document.querySelector('.sent-message');
+      var errorMessage = document.querySelector('.error-message');
+      var loading = document.querySelector('.loading');
+
+      form.addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevent default form submission behavior
+
+        var formData = new FormData(form);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open(form.method, form.action);
+        xhr.setRequestHeader('Accept', 'application/json');
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState !== XMLHttpRequest.DONE) return;
+          if (xhr.status === 200) {
+              form.reset();
+              sentMessage.style.display = 'block'; // Show success message
+              errorMessage.style.display = 'none'; // Hide error message
+          
+         
+          } else {
+              console.log(errorMessage);
+          }
+          loading.style.display = 'none'; // Hide loading
+        };
+        xhr.send(formData);
+
+        loading.style.display = 'block'; // Show loading
+      });
+    });
 
   </script>
 </body>
