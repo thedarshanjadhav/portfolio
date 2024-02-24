@@ -506,7 +506,7 @@
       </div>
 
       <form action="https://formspree.io/f/mqkrbkwn"
-      method="POST" role="form" class="php-email-form mt-4">
+      method="POST" id="my-form" class="php-email-form mt-4">
         <div class="row">
           <div class="col-md-6 form-group">
             <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
@@ -523,8 +523,9 @@
         </div>
         <div class="my-3">
           <!-- <div class="loading" style="display: none;">Loading</div> -->
-          <div class="sent-message">Your message has been sent. Thank you!</div>
+          <!-- <div class="sent-message" style="display: none;">Your message has been sent. Thank you!</div> -->
           <!-- <div class="error-message" style="display: none;"></div> -->
+          <p id="my-form-status" class="text-center"></p>
         </div>
         <div class="text-center"><button type="submit">Send Message</button></div>
       </form>
@@ -539,7 +540,7 @@
   <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
   <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
   <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
-  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <!-- <script src="assets/vendor/php-email-form/validate.js"></script> -->
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
@@ -553,38 +554,36 @@
       loop : true
     });
 
-    document.addEventListener("DOMContentLoaded", function () {
-      var form = document.querySelector('.php-email-form');
-      var sentMessage = document.querySelector('.sent-message');
-      var errorMessage = document.querySelector('.error-message');
-      var loading = document.querySelector('.loading');
-
-      form.addEventListener('submit', function (event) {
-        event.preventDefault(); // Prevent default form submission behavior
-
-        var formData = new FormData(form);
-
-        var xhr = new XMLHttpRequest();
-        xhr.open(form.method, form.action);
-        xhr.setRequestHeader('Accept', 'application/json');
-        xhr.onreadystatechange = function () {
-          if (xhr.readyState !== XMLHttpRequest.DONE) return;
-          if (xhr.status === 200) {
-              form.reset();
-              sentMessage.style.display = 'block'; // Show success message
-              errorMessage.style.display = 'none'; // Hide error message
-          
-         
-          } else {
-              console.log(errorMessage);
-          }
-          loading.style.display = 'none'; // Hide loading
-        };
-        xhr.send(formData);
-
-        loading.style.display = 'block'; // Show loading
+    var form = document.getElementById("my-form");
+    
+    async function handleSubmit(event) {
+      event.preventDefault();
+      var status = document.getElementById("my-form-status");
+      var data = new FormData(event.target);
+      fetch(event.target.action, {
+        method: form.method,
+        body: data,
+        headers: {
+            'Accept': 'application/json'
+        }
+      }).then(response => {
+        if (response.ok) {
+          status.innerHTML = "Thanks for your submission!";
+          form.reset()
+        } else {
+          response.json().then(data => {
+            if (Object.hasOwn(data, 'errors')) {
+              status.innerHTML = data["errors"].map(error => error["message"]).join(", ")
+            } else {
+              status.innerHTML = "Oops! There was a problem submitting your form"
+            }
+          })
+        }
+      }).catch(error => {
+        status.innerHTML = "Oops! There was a problem submitting your form"
       });
-    });
+    }
+    form.addEventListener("submit", handleSubmit)
 
   </script>
 </body>
